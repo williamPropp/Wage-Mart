@@ -40,20 +40,20 @@ position = Vector2( -733, -286 )
 [node name="hand_hbox_poly" type="CollisionPolygon2D" parent="hand/hand_hbox"]
 polygon = PoolVector2Array( 719, 327, 705, 289, 718, 243, 763, 257, 770, 304, 760, 327 )
 
-[node name="scanner" type="Area2D" parent="."]
+[node name="scanner" type="Area2D" parent="." groups=["scanner"]]
 
 [node name="scanner_poly" type="CollisionPolygon2D" parent="scanner"]
 position = Vector2( -402, 129 )
 polygon = PoolVector2Array( 719, 327, 718, 243, 740, 243, 739, 327 )
 
-[node name="entry_conveyor" type="Area2D" parent="."]
+[node name="entry_conveyor" type="Area2D" parent="." groups=["entry_conveyor"]]
 
 [node name="entry_conveyor_poly" type="CollisionPolygon2D" parent="entry_conveyor"]
-position = Vector2( -20495.8, -876.566 )
-scale = Vector2( 29.2564, 4.33824 )
+position = Vector2( -20412.3, -876.566 )
+scale = Vector2( 29.1446, 4.33824 )
 polygon = PoolVector2Array( 718.05, 327, 718, 243, 740, 243, 740.132, 328 )
 
-[node name="exit_conveyor" type="Area2D" parent="."]
+[node name="exit_conveyor" type="Area2D" parent="." groups=["exit_conveyor"]]
 
 [node name="exit_conveyor_poly" type="CollisionPolygon2D" parent="exit_conveyor"]
 position = Vector2( -16008, -175 )
@@ -106,6 +106,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -1024.0
 margin_bottom = 600.0
+mouse_filter = 2
 color = Color( 0.839216, 0.278431, 0.278431, 0 )
 __meta__ = {
 "_edit_lock_": true

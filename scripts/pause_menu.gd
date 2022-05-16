@@ -4,8 +4,9 @@ var is_paused = false setget set_is_paused
 
 func _input(event):
 	if Input.is_action_just_pressed("pause"):
+		print(self.is_paused)
 		self.is_paused = !is_paused
-#		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		print(self.is_paused)
 
 func set_is_paused(new_is_paused_value):
 	is_paused = new_is_paused_value
@@ -13,8 +14,10 @@ func set_is_paused(new_is_paused_value):
 	visible = is_paused
 	if(is_paused): 
 		print("pause")
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else: 
 		print("unpause")
+		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 
 func _on_quit_btn_pressed():

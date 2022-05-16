@@ -11,7 +11,7 @@ onready var grocery = get_node("grocery_item")
 onready var hand = get_node("hand")
 
 onready var hand_open_sprite = load("res://assets/open_arm.png")
-onready var hand_closed_sprite = load("res://assets/closed_arm3.png")
+onready var hand_closed_sprite = load("res://assets/closed_arm.png")
 
 var conveyor_speed = 1
 var conveyor_rect
@@ -31,7 +31,8 @@ func _physics_process(delta):
 
 func _input(event):
 	if(event is InputEventMouseMotion):
-		hand.position.x = event.position.x
+		if(event.position.x > 55 && event.position.x < 985):
+			hand.position.x = event.position.x
 		if(event.position.y > 200):
 			hand.position.y = event.position.y
 			
@@ -79,21 +80,3 @@ func new_shopper():
 func edit_saturation(value):
 	var shader = get_node("greyscale_parent/greyscale").material
 	shader.set_shader_param("weight", value)
-
-
-func _on_hand_hbox_area_entered(area):
-	var area_name = area.get_parent().filename
-	match(area_name):
-		"res://prefabs/grocery_item.tscn":
-			area.get_parent().is_pickupable = true
-		_:
-			pass
-
-func _on_hand_hbox_area_exited(area):
-	var area_name = area.get_parent().filename
-	match(area_name):
-		"res://prefabs/grocery_item.tscn":
-			area.get_parent().is_pickupable = false
-		_:
-			pass
-	
