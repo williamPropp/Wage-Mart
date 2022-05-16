@@ -5,11 +5,13 @@
 
 [node name="grocery_item" type="Sprite" groups=["grocery_items"]]
 texture = ExtResource( 1 )
+centered = false
 script = ExtResource( 2 )
 
 [node name="groc_item_hbox" type="Area2D" parent="."]
 
 [node name="groc_item_hbox_poly" type="CollisionPolygon2D" parent="groc_item_hbox"]
+position = Vector2( 32, 33 )
 polygon = PoolVector2Array( -31, -31, -31, 31, 30, 31, 31, -31 )
 
 [connection signal="area_entered" from="groc_item_hbox" to="." method="_on_groc_item_hbox_area_entered"]

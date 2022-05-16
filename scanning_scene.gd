@@ -16,18 +16,13 @@ onready var hand_closed_sprite = load("res://assets/closed_arm.png")
 var conveyor_speed = 1
 var conveyor_rect
 
+var furthest_left_groc_item
+
 func _ready():
 	rng.randomize()
-	new_shopper()
+#	new_shopper()
 	conveyor_rect = get_adjusted_rect(conveyor)
-	spawn_grocery_item()
-
-func _physics_process(delta):
-	for i in grocery_items:
-		if(i == null):
-			pass
-		elif(is_point_within_area(i.position, conveyor_rect)):
-			i.position.x -= conveyor_speed
+#	spawn_grocery_item()
 
 func _input(event):
 	if(event is InputEventMouseMotion):

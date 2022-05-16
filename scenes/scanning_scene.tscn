@@ -49,8 +49,15 @@ polygon = PoolVector2Array( 719, 327, 718, 243, 740, 243, 739, 327 )
 [node name="entry_conveyor" type="Area2D" parent="." groups=["entry_conveyor"]]
 
 [node name="entry_conveyor_poly" type="CollisionPolygon2D" parent="entry_conveyor"]
-position = Vector2( -20412.3, -876.566 )
-scale = Vector2( 29.1446, 4.33824 )
+position = Vector2( -21825.3, -876.566 )
+scale = Vector2( 31.0368, 4.33824 )
+polygon = PoolVector2Array( 718.05, 327, 718, 243, 740, 243, 740.132, 328 )
+
+[node name="conveyor_stop" type="Area2D" parent="." groups=["conveyor_stop"]]
+
+[node name="conveyor_stop_poly" type="CollisionPolygon2D" parent="conveyor_stop"]
+position = Vector2( 81.4714, -961 )
+scale = Vector2( 0.524295, 4.65024 )
 polygon = PoolVector2Array( 718.05, 327, 718, 243, 740, 243, 740.132, 328 )
 
 [node name="exit_conveyor" type="Area2D" parent="." groups=["exit_conveyor"]]
@@ -113,7 +120,11 @@ __meta__ = {
 }
 
 [node name="grocery_item" parent="." instance=ExtResource( 8 )]
-position = Vector2( 412, 433 )
+position = Vector2( 363, 444 )
+
+[node name="grocery_item2" parent="." instance=ExtResource( 8 )]
+position = Vector2( 321, 272 )
+scale = Vector2( 1.54688, 1 )
 
 [connection signal="area_entered" from="hand/hand_hbox" to="." method="_on_hand_hbox_area_entered"]
 [connection signal="area_exited" from="hand/hand_hbox" to="." method="_on_hand_hbox_area_exited"]
