@@ -8,7 +8,7 @@ var is_dragging = false
 var pickup_grow_factor = 1.05
 var conveyor_speed = 2
 
-var is_entry_conveyor_active = false
+var is_entry_conveyor_active = true
 var is_pickupable = false
 var on_entry_conveyor = false
 var on_exit_conveyor = false
@@ -50,17 +50,23 @@ func _on_groc_item_hbox_area_entered(area):
 func _on_groc_item_hbox_area_exited(area):
 	group_collision_update(area, false)
 
-func group_collision_update(area, toggle_on):
+func group_collision_update(area, entered):
 	if(area.get_parent().is_in_group("hand")):
-		is_pickupable = toggle_on
+		is_pickupable = entered
 	elif(area.is_in_group("scanner")):
 		var rand = rng.randi_range(0,2)
-		if(rand == 2):
+		if(rand == 2 && entered):
 			Global.play_sound("scanner_beep")
 	elif(area.is_in_group("entry_conveyor")):
-		on_entry_conveyor = toggle_on
+		on_entry_conveyor = entered
 	elif(area.is_in_group("conveyor_stop")):
 		for groc_item in get_tree().get_nodes_in_group("grocery_items"):
-			groc_item.is_entry_conveyor_active = !toggle_on
+			groc_item.is_entry_conveyor_active = !entered
 	elif(area.is_in_group("exit_conveyor")):
-		on_exit_conveyor = toggle_on
+		on_exit_conveyor = entered
+
+func apply_texture(texture_name):
+	if(Global.grocery_item_types.has(texture_name)):
+		self.texture = load("res://assets/" + texture_name + ".png")
+	else:
+		print("texture_name not in Global.grocery_item_types")

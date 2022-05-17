@@ -3,7 +3,7 @@ extends Node
 var current_scene_state
 enum Scene_States {main_menu_scene_state, scanning_scene_state, baggin_scene_state, finance_scene_state}
 
-var grocery_item_types = []
+var grocery_item_types = ["apple", "bleach", "cheese", "chips", "soda"]
 
 var hand
 var hand_position
