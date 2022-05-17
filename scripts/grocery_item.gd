@@ -70,3 +70,8 @@ func apply_texture(texture_name):
 		self.texture = load("res://assets/" + texture_name + ".png")
 	else:
 		print("texture_name not in Global.grocery_item_types")
+
+	if(texture_name == "bleach"):
+		self.get_node("groc_item_hbox").scale = Vector2(1.5, 3.0)
+	elif(texture_name == "chips"):
+		self.get_node("groc_item_hbox").scale = Vector2(1.5, 2.0)

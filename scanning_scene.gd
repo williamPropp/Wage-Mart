@@ -51,7 +51,7 @@ func _input(event):
 
 func spawn_rand_grocery_item():
 	var new_grocery_item = load("res://prefabs/grocery_item.tscn").instance()
-	var rand_y = rng.randi_range(180, 520)
+	var rand_y = rng.randi_range(180, 400)
 	self.add_child(new_grocery_item)
 	new_grocery_item.position = Vector2(1050, rand_y)
 	new_grocery_item.apply_texture( Global.grocery_item_types[ rng.randi_range(0, 4) ] )
