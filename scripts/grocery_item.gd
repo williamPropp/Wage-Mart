@@ -54,9 +54,9 @@ func group_collision_update(area, toggle_on):
 	if(area.get_parent().is_in_group("hand")):
 		is_pickupable = toggle_on
 	elif(area.is_in_group("scanner")):
-		var rand = rng.randi_range(0,5)
-		if(rand > 4):
-			print("scanned")
+		var rand = rng.randi_range(0,2)
+		if(rand == 2):
+			Global.play_sound("scanner_beep")
 	elif(area.is_in_group("entry_conveyor")):
 		on_entry_conveyor = toggle_on
 	elif(area.is_in_group("conveyor_stop")):

@@ -2,10 +2,6 @@ extends Node2D
 
 var rng = RandomNumberGenerator.new()
 
-
-var grocery_item_types = []
-var grocery_items = []
-
 onready var conveyor = get_node("conveyor_table")
 onready var grocery = get_node("grocery_item")
 onready var hand = get_node("hand")
@@ -56,7 +52,6 @@ func is_point_within_area(point, rect):
 
 func spawn_grocery_item():
 	var new_grocery_item = load("res://prefabs/grocery_item.tscn").instance()
-	grocery_items.append(new_grocery_item)
 	var new_grocery_item_height = new_grocery_item.get_rect().size.y
 	var conveyor_top = conveyor_rect.position.y + (new_grocery_item_height / 1.5)
 	var conveyor_bottom = conveyor_rect.position.y + conveyor_rect.size.y - (new_grocery_item_height / 1.5)
