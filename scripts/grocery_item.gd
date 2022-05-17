@@ -8,7 +8,6 @@ var is_dragging = false
 var pickup_grow_factor = 1.05
 var conveyor_speed = 2
 
-var is_entry_conveyor_active = true
 var is_pickupable = false
 var on_entry_conveyor = false
 var on_exit_conveyor = false
@@ -39,8 +38,12 @@ func _input(event):
 		position = Global.hand_position + click_offset
 
 func _physics_process(delta):
-	if(on_entry_conveyor && !is_dragging && is_entry_conveyor_active && position.x > 460):
-		self.position.x -= conveyor_speed
+	if(on_entry_conveyor && !is_dragging && Global.is_entry_conveyor_active):
+		if(position.x > 1024):
+			self.position.x -= 5 * conveyor_speed
+		elif(position.x > 460):
+			self.position.x -= conveyor_speed
+	
 	if(on_exit_conveyor && !is_dragging):
 		self.position.x -= conveyor_speed
 
@@ -60,8 +63,9 @@ func group_collision_update(area, entered):
 	elif(area.is_in_group("entry_conveyor")):
 		on_entry_conveyor = entered
 	elif(area.is_in_group("conveyor_stop")):
-		for groc_item in get_tree().get_nodes_in_group("grocery_items"):
-			groc_item.is_entry_conveyor_active = !entered
+#		for groc_item in get_tree().get_nodes_in_group("grocery_items"):
+#			groc_item.is_entry_conveyor_active = !entered
+		Global.is_entry_conveyor_active = !entered
 	elif(area.is_in_group("exit_conveyor")):
 		on_exit_conveyor = entered
 

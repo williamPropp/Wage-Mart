@@ -1,20 +1,24 @@
 extends Node
 
-var current_scene_state
-enum Scene_States {main_menu_scene_state, scanning_scene_state, baggin_scene_state, finance_scene_state}
+enum Scene_State {main_menu_scene_state, scanning_scene_state, bagging_scene_state, finance_scene_state}
+var current_scene_state = Scene_State.scanning_scene_state
+#var current_scene_state = Scene_State.bagging_scene_state
 
 var grocery_item_types = ["apple", "bleach", "cheese", "chips", "soda"]
+var is_entry_conveyor_active = true
 
 var hand
 var hand_position
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-	
+#	if(current_scene_state == Scene_State.scanning_scene_state || current_scene_state == Scene_State.bagging_scene_state):
+#		hand = get_tree().get_nodes_in_group("hand")[0]
 	hand = get_tree().get_nodes_in_group("hand")[0]
 
 func _physics_process(delta):
-	hand_position = hand.position
+	if(current_scene_state == Scene_State.scanning_scene_state):
+		hand_position = hand.position
 
 func play_sound(sample_name, bus = "Master"):
 	var sample_path

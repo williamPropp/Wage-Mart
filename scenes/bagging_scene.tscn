@@ -1,0 +1,109 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://scenes/gui.tscn" type="PackedScene" id=1]
+[ext_resource path="res://materials+shaders/black_n_white.gdshader" type="Shader" id=2]
+[ext_resource path="res://assets/open_arm.png" type="Texture" id=3]
+[ext_resource path="res://prefabs/grocery_item_physics.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scripts/bagging_scene.gd" type="Script" id=5]
+[ext_resource path="res://icon.png" type="Texture" id=6]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 1.41072, 30.125 )
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 2 )
+shader_param/weight = 1.0
+
+[node name="bagging_scene" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="hand" type="Sprite" parent="." groups=["hand"]]
+position = Vector2( 733, 286 )
+z_index = 2
+texture = ExtResource( 3 )
+centered = false
+offset = Vector2( -80, -80 )
+
+[node name="hand_hbox" type="Area2D" parent="hand"]
+position = Vector2( -733, -286 )
+
+[node name="hand_hbox_poly" type="CollisionPolygon2D" parent="hand/hand_hbox"]
+polygon = PoolVector2Array( 719, 327, 706, 297, 718, 243, 763, 257, 766, 297, 760, 327 )
+
+[node name="grocery_bag" type="Node2D" parent="."]
+
+[node name="bag_wall_left" type="Sprite" parent="grocery_bag"]
+position = Vector2( 236, 390 )
+scale = Vector2( 3.5, 4.5 )
+texture = ExtResource( 6 )
+
+[node name="wall_static_body" type="StaticBody2D" parent="grocery_bag/bag_wall_left"]
+position = Vector2( -0.571419, 2.22223 )
+rotation = 0.785398
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="grocery_bag/bag_wall_left/wall_static_body"]
+position = Vector2( 20.1133, 19.3949 )
+rotation = 0.785398
+shape = SubResource( 2 )
+
+[node name="wall_static_body2" type="StaticBody2D" parent="grocery_bag/bag_wall_left"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="grocery_bag/bag_wall_left/wall_static_body2"]
+position = Vector2( 30.5714, -0.222221 )
+shape = SubResource( 2 )
+
+[node name="wall_static_body3" type="StaticBody2D" parent="grocery_bag/bag_wall_left"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="grocery_bag/bag_wall_left/wall_static_body3"]
+position = Vector2( -29.7143, -0.444443 )
+shape = SubResource( 2 )
+
+[node name="gui" parent="." instance=ExtResource( 1 )]
+layer = 3
+
+[node name="frame" type="Control" parent="."]
+visible = false
+margin_top = -100.0
+margin_right = 40.0
+margin_bottom = -60.0
+
+[node name="frame_left" type="ColorRect" parent="frame"]
+margin_left = -531.0
+margin_bottom = 800.0
+color = Color( 0.333333, 0.333333, 0.333333, 1 )
+
+[node name="frame_right" type="ColorRect" parent="frame"]
+margin_left = 1024.0
+margin_right = 1686.0
+margin_bottom = 800.0
+color = Color( 0.333333, 0.333333, 0.333333, 1 )
+
+[node name="frame_top" type="ColorRect" parent="frame"]
+margin_right = 1024.0
+margin_bottom = 100.0
+color = Color( 0.333333, 0.333333, 0.333333, 1 )
+
+[node name="frame_bottom" type="ColorRect" parent="frame"]
+margin_top = 700.0
+margin_right = 1024.0
+margin_bottom = 800.0
+color = Color( 0.333333, 0.333333, 0.333333, 1 )
+
+[node name="greyscale_parent" type="CanvasLayer" parent="."]
+layer = 3
+
+[node name="greyscale" type="ColorRect" parent="greyscale_parent"]
+material = SubResource( 1 )
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1024.0
+margin_bottom = 600.0
+mouse_filter = 2
+color = Color( 0.839216, 0.278431, 0.278431, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="grocery_item_physics" parent="." instance=ExtResource( 4 )]
+position = Vector2( 502, 367 )
