@@ -3,7 +3,7 @@ extends Control
 var is_paused = false setget set_is_paused
 
 func _input(event):
-	if Input.is_action_just_pressed("pause"):
+	if (Input.is_action_just_pressed("pause") && Global.current_scene_name != "main_menu"):
 		self.is_paused = !is_paused
 
 func set_is_paused(new_is_paused_value):

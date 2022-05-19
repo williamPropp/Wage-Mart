@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-var translate_offset
+var click_offset
 var is_pickupable = false
 var is_dragging = false
 
@@ -13,6 +13,7 @@ var pickup_grow_factor = 1.05
 func _input(event):
 	if Input.is_action_just_pressed("left_mouse") && is_pickupable:
 		is_dragging = true
+		click_offset = global_position - event.position
 		self.get_node("grocery_item_sprite").scale = Vector2(pickup_grow_factor, pickup_grow_factor)
 		mode = MODE_STATIC
 	elif Input.is_action_just_released("left_mouse") && is_dragging:
@@ -24,7 +25,7 @@ func _input(event):
 
 func _physics_process(delta):
 	if(is_dragging):
-		self.global_position = Global.hand_position
+		self.global_position = Global.hand_position + click_offset
 
 func _integrate_forces(state):
 	if(is_dragging):
@@ -37,7 +38,30 @@ func apply_texture(texture_name):
 		get_node("grocery_item_sprite").texture = load("res://assets/" + texture_name + ".png")
 	else:
 		print("texture_name not in Global.grocery_item_types")
-
+	
+	var new_scale = Vector2(1.0, 1.0)
+	var new_position = Vector2(0.0, 0.0)
+	match(texture_name):
+		("apple"):
+			new_scale = Vector2(0.7, 0.7)
+			new_position = Vector2(5.0, 5.0)
+		("bleach"):
+			new_scale = Vector2(1.5, 2.7)
+		("cheese"):
+			new_scale = Vector2(1.0, 0.7)
+			new_position = Vector2(1.0, 12.0)
+		("chips"):
+			new_scale = Vector2(1.5, 2.0)
+		("soda"):
+			new_scale = Vector2(0.7, 1.2)
+		("cash"):
+			new_position = Vector2(40.0, 40.0)
+	
+	self.get_node("groc_item_hbox/area2d's poly").scale = new_scale
+	self.get_node("groc_item_hbox/area2d's poly").position += new_position
+	self.get_node("groc_item_rigib_body_poly").scale = new_scale
+	self.get_node("groc_item_rigib_body_poly").position += new_position
+	
 func _on_groc_item_hbox_area_entered(area):
 	if(area.get_parent().is_in_group("hand")): is_pickupable = true
 

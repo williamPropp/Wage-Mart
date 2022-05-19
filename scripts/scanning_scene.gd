@@ -20,12 +20,10 @@ var extending_cash_hand = false
 var withdrawing_cash_hand = false
 
 var num_items
-var shopper_cart_items = []
 
 func _ready():
 	rng.randomize()
 	new_shopper()
-#	get_tree().debug_collisions_hint = true
 
 func _input(event):
 	if(event is InputEventMouseMotion):
@@ -95,7 +93,7 @@ func spawn_rand_grocery_item():
 func new_shopper():
 	shopping_cart.position.x = 1400
 	shopping_cart_enter = true
-	shopper_cart_items = []
+	Global.shopper_cart_items = []
 	
 	num_items = rng.randi_range(3, 7)
 	var time_between_items = rng.randf_range(0.7, 2)
@@ -104,7 +102,7 @@ func new_shopper():
 		yield(get_tree().create_timer(time_between_items), "timeout")
 
 func groc_item_exited_left(groc_type):
-	shopper_cart_items.append(groc_type)
+	Global.shopper_cart_items.append(groc_type)
 	num_items -= 1
 
 func test_grocery_stop():
@@ -121,7 +119,8 @@ func cash_deposited_in_cashbox():
 	yield(get_tree().create_timer(1.5), "timeout")
 	shopping_cart_exit = true
 	yield(get_tree().create_timer(4.0), "timeout")
-	new_shopper()
+	Global.scene_switch("bagging_scene")
+#	new_shopper()
 
 func edit_saturation(value):
 	var shader = get_node("greyscale_parent/greyscale").material

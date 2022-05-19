@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/gui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://materials+shaders/black_n_white.gdshader" type="Shader" id=2]
 [ext_resource path="res://assets/open_arm.png" type="Texture" id=3]
-[ext_resource path="res://prefabs/grocery_item_physics.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scripts/bagging_scene.gd" type="Script" id=5]
 [ext_resource path="res://icon.png" type="Texture" id=6]
 [ext_resource path="res://assets/bagging_bg.png" type="Texture" id=7]
@@ -15,7 +14,7 @@ extents = Vector2( 1.41072, 30.125 )
 shader = ExtResource( 2 )
 shader_param/weight = 1.0
 
-[node name="bagging_scene" type="Node2D"]
+[node name="bagging_scene" type="Node2D" groups=["bagging_scene"]]
 script = ExtResource( 5 )
 
 [node name="bg" type="Sprite" parent="."]
@@ -73,7 +72,7 @@ position = Vector2( 40, 11 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 6 )
 
-[node name="StaticBody2D" type="RigidBody2D" parent="grocery_bag_test"]
+[node name="StaticBody2D" type="StaticBody2D" parent="grocery_bag_test"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="grocery_bag_test/StaticBody2D"]
 polygon = PoolVector2Array( -93, -129, -66, -127, -57, 118, 141, 123, 143, -119, 177, -119, 176, 148, -93, 146 )
@@ -128,6 +127,3 @@ color = Color( 0.839216, 0.278431, 0.278431, 0 )
 __meta__ = {
 "_edit_lock_": true
 }
-
-[node name="grocery_item_physics" parent="." instance=ExtResource( 4 )]
-position = Vector2( 502, 367 )

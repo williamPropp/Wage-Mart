@@ -1,8 +1,7 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/gui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/scanning_scene.gd" type="Script" id=2]
-[ext_resource path="res://assets/scanner_and_conveyors.png" type="Texture" id=3]
 [ext_resource path="res://assets/open_arm.png" type="Texture" id=4]
 [ext_resource path="res://assets/tiled_floor.png" type="Texture" id=5]
 [ext_resource path="res://assets/shopping_cart.png" type="Texture" id=6]
@@ -19,7 +18,7 @@
 shader = ExtResource( 7 )
 shader_param/weight = 1.0
 
-[node name="scanning_scene" type="Node2D"]
+[node name="scanning_scene" type="Node2D" groups=["scanning_scene"]]
 script = ExtResource( 2 )
 
 [node name="floor" type="Sprite" parent="."]
@@ -134,14 +133,6 @@ position = Vector2( -733, -286 )
 position = Vector2( 244, 82 )
 scale = Vector2( 0.656249, 0.65625 )
 polygon = PoolVector2Array( 733, 296, 749, 324, 766, 297 )
-
-[node name="conveyor_table2" type="Sprite" parent="."]
-visible = false
-position = Vector2( 606, 329 )
-texture = ExtResource( 3 )
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="gui" parent="." instance=ExtResource( 1 )]
 layer = 4
