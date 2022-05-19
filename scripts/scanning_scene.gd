@@ -8,7 +8,9 @@ onready var shopping_cart = get_node("shopping_cart")
 onready var hand_open_sprite = load("res://assets/open_arm.png")
 onready var hand_closed_sprite = load("res://assets/closed_arm.png")
 
-var shopping_cart_speed = 4
+var shopping_cart_speed = 6
+var customer_hand_speed = 8
+var cash_drawer_speed = 6
 var shopping_cart_enter = false
 var shopping_cart_exit = false
 
@@ -23,7 +25,7 @@ var shopper_cart_items = []
 func _ready():
 	rng.randomize()
 	new_shopper()
-	get_tree().debug_collisions_hint = true
+#	get_tree().debug_collisions_hint = true
 
 func _input(event):
 	if(event is InputEventMouseMotion):
@@ -52,24 +54,24 @@ func _physics_process(delta):
 	
 	if(opening_cash_box):
 		if($register_drawer.position.y < 256):
-			$register_drawer.position.y += 3
+			$register_drawer.position.y += cash_drawer_speed
 		else:
 			opening_cash_box = false
 	elif(closing_cash_box):
 		if($register_drawer.position.y >= 158):
-			$register_drawer.position.y -= 3
+			$register_drawer.position.y -= cash_drawer_speed
 		else:
 			closing_cash_box = false
 			$register_drawer.position.y = 158
 	
 	if(extending_cash_hand):
 		if($customer_hand.position.x > 650):
-			$customer_hand.position += Vector2(-3.0, 3.0)
+			$customer_hand.position += Vector2(-customer_hand_speed, customer_hand_speed)
 		else:
 			extending_cash_hand = false
 	elif(withdrawing_cash_hand):
 		if($customer_hand.position.y > -280):
-			$customer_hand.position -= Vector2(-3.0, 3.0)
+			$customer_hand.position -= Vector2(-customer_hand_speed, customer_hand_speed)
 		else:
 			withdrawing_cash_hand = false
 			$customer_hand.position = Vector2(1000, -300)
@@ -78,6 +80,7 @@ func _physics_process(delta):
 		num_items -= 1
 		$customer_hand/cash.visible = true
 		extending_cash_hand = true
+		$customer_hand.texture = hand_closed_sprite
 		opening_cash_box = true
 
 func spawn_rand_grocery_item():
@@ -111,6 +114,7 @@ func test_grocery_stop():
 
 func cash_taken():
 	withdrawing_cash_hand = true
+	$customer_hand.texture = hand_open_sprite
 
 func cash_deposited_in_cashbox():
 	closing_cash_box = true
