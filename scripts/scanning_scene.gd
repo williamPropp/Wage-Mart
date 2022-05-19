@@ -12,12 +12,20 @@ var shopping_cart_speed = 4
 var shopping_cart_enter = false
 var shopping_cart_exit = false
 
+var opening_cash_box = false
+var closing_cash_box = false
+var extending_cash_hand = false
+var withdrawing_cash_hand = false
+
 var num_items
 var shopper_cart_items = []
 
 func _ready():
 	rng.randomize()
 	new_shopper()
+	get_tree().debug_collisions_hint = true
+	opening_cash_box = true
+	extending_cash_hand = true
 
 func _input(event):
 	if(event is InputEventMouseMotion):
@@ -39,9 +47,35 @@ func _physics_process(delta):
 		elif(shopping_cart_exit && shopping_cart.position.x < -400):
 			shopping_cart_exit = false
 	
+	if(opening_cash_box):
+		if($register_drawer.position.y < 256):
+			$register_drawer.position.y += 3
+		else:
+			opening_cash_box = false
+	elif(closing_cash_box):
+		if($register_drawer.position.y >= 158):
+			$register_drawer.position.y -= 3
+		else:
+			closing_cash_box = false
+			$register_drawer.position.y = 158
+	
+	if(extending_cash_hand):
+		if($customer_hand.position.x > 650):
+			$customer_hand.position += Vector2(-3.0, 3.0)
+		else:
+			extending_cash_hand = false
+	elif(withdrawing_cash_hand):
+		if($customer_hand.position.y > -280):
+			$customer_hand.position -= Vector2(-3.0, 3.0)
+		else:
+			withdrawing_cash_hand = false
+			$customer_hand.position = Vector2(1000, -300)
+	
 	if(num_items == 0):
-		shopping_cart_exit = true
 		num_items -= 1
+		extending_cash_hand = true
+		opening_cash_box = true
+		shopping_cart_exit = true
 		yield(get_tree().create_timer(4.0), "timeout")
 		new_shopper()
 
@@ -68,6 +102,12 @@ func new_shopper():
 func groc_item_exited_left(groc_type):
 	shopper_cart_items.append(groc_type)
 	num_items -= 1
+
+func cash_taken():
+	withdrawing_cash_hand = true
+
+func cash_deposited_in_cashbox():
+	closing_cash_box = true
 
 func edit_saturation(value):
 	var shader = get_node("greyscale_parent/greyscale").material

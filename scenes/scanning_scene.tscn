@@ -1,12 +1,19 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/gui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/scanning_scene.gd" type="Script" id=2]
-[ext_resource path="res://assets/scanner.png" type="Texture" id=3]
+[ext_resource path="res://assets/scanner_and_conveyors.png" type="Texture" id=3]
 [ext_resource path="res://assets/open_arm.png" type="Texture" id=4]
 [ext_resource path="res://assets/tiled_floor.png" type="Texture" id=5]
 [ext_resource path="res://assets/shopping_cart.png" type="Texture" id=6]
 [ext_resource path="res://materials+shaders/black_n_white.gdshader" type="Shader" id=7]
+[ext_resource path="res://assets/scanner.png" type="Texture" id=8]
+[ext_resource path="res://assets/register_cover.png" type="Texture" id=9]
+[ext_resource path="res://assets/register_drawer.png" type="Texture" id=10]
+[ext_resource path="res://assets/register.png" type="Texture" id=11]
+[ext_resource path="res://assets/computer.png" type="Texture" id=12]
+[ext_resource path="res://prefabs/grocery_item.tscn" type="PackedScene" id=13]
+[ext_resource path="res://assets/closed_arm.png" type="Texture" id=14]
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 7 )
@@ -44,7 +51,8 @@ polygon = PoolVector2Array( 733, 296, 749, 324, 766, 297 )
 [node name="scanner" type="Area2D" parent="." groups=["scanner"]]
 
 [node name="scanner_poly" type="CollisionPolygon2D" parent="scanner"]
-position = Vector2( -402, 129 )
+position = Vector2( -531.345, 129 )
+scale = Vector2( 1.18182, 1 )
 polygon = PoolVector2Array( 719, 327, 718, 243, 740, 243, 739, 327 )
 
 [node name="entry_conveyor" type="Area2D" parent="." groups=["entry_conveyor"]]
@@ -73,10 +81,70 @@ polygon = PoolVector2Array( 718.05, 327, 718, 243, 740, 243, 740.132, 328 )
 
 [node name="conveyor_table" type="Sprite" parent="."]
 position = Vector2( 606, 362 )
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="register" type="Sprite" parent="."]
+position = Vector2( 324, 197 )
+texture = ExtResource( 11 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="register_drawer" type="Sprite" parent="."]
+position = Vector2( 324, 158 )
+texture = ExtResource( 10 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="register_drawer_hbox" type="Area2D" parent="register_drawer" groups=["cashbox"]]
+
+[node name="register_drawer_poly" type="CollisionPolygon2D" parent="register_drawer/register_drawer_hbox"]
+position = Vector2( -5204, -138 )
+scale = Vector2( 7.13661, 0.577155 )
+polygon = PoolVector2Array( 718.05, 327, 718, 243, 740, 243, 740.132, 328 )
+
+[node name="register_cover" type="Sprite" parent="."]
+position = Vector2( 324, 197 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="computer" type="Sprite" parent="."]
+position = Vector2( 325, 144 )
+texture = ExtResource( 12 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="customer_hand" type="Sprite" parent="."]
+position = Vector2( 1000, -300 )
+rotation = 3.71581
+scale = Vector2( -1, 1 )
+z_index = 2
+texture = ExtResource( 14 )
+
+[node name="cash" parent="customer_hand" instance=ExtResource( 13 )]
+show_behind_parent = true
+position = Vector2( -88, -168 )
+rotation = -1.03847
+z_index = 0
+grocery_type = "cash"
+
+[node name="conveyor_table2" type="Sprite" parent="."]
+visible = false
+position = Vector2( 606, 329 )
 texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="gui" parent="." instance=ExtResource( 1 )]
-layer = 3
+layer = 4
 
 [node name="frame" type="Control" parent="."]
 visible = false
@@ -107,7 +175,7 @@ margin_bottom = 800.0
 color = Color( 0.333333, 0.333333, 0.333333, 1 )
 
 [node name="greyscale_parent" type="CanvasLayer" parent="."]
-layer = 3
+layer = 5
 
 [node name="greyscale" type="ColorRect" parent="greyscale_parent"]
 material = SubResource( 2 )
