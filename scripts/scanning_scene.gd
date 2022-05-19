@@ -24,8 +24,7 @@ func _ready():
 	rng.randomize()
 	new_shopper()
 	get_tree().debug_collisions_hint = true
-	opening_cash_box = true
-	extending_cash_hand = true
+	print($customer_hand/cash.global_position)
 
 func _input(event):
 	if(event is InputEventMouseMotion):
@@ -46,6 +45,11 @@ func _physics_process(delta):
 			shopping_cart_enter = false
 		elif(shopping_cart_exit && shopping_cart.position.x < -400):
 			shopping_cart_exit = false
+	
+	if( !test_grocery_stop() ):
+		Global.is_entry_conveyor_active = false
+	else:
+		Global.is_entry_conveyor_active = true
 	
 	if(opening_cash_box):
 		if($register_drawer.position.y < 256):
@@ -73,11 +77,9 @@ func _physics_process(delta):
 	
 	if(num_items == 0):
 		num_items -= 1
+		$customer_hand/cash.visible = true
 		extending_cash_hand = true
 		opening_cash_box = true
-		shopping_cart_exit = true
-		yield(get_tree().create_timer(4.0), "timeout")
-		new_shopper()
 
 func spawn_rand_grocery_item():
 	var new_grocery_item = load("res://prefabs/grocery_item.tscn").instance()
@@ -103,11 +105,20 @@ func groc_item_exited_left(groc_type):
 	shopper_cart_items.append(groc_type)
 	num_items -= 1
 
+func test_grocery_stop():
+	for groc_item in get_tree().get_nodes_in_group("grocery_items"):
+		if(groc_item.is_within_conveyor_stop): return false
+	return true
+
 func cash_taken():
 	withdrawing_cash_hand = true
 
 func cash_deposited_in_cashbox():
 	closing_cash_box = true
+	yield(get_tree().create_timer(1.5), "timeout")
+	shopping_cart_exit = true
+	yield(get_tree().create_timer(4.0), "timeout")
+	new_shopper()
 
 func edit_saturation(value):
 	var shader = get_node("greyscale_parent/greyscale").material

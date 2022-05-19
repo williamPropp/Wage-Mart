@@ -33,21 +33,6 @@ __meta__ = {
 position = Vector2( 1400, 23 )
 texture = ExtResource( 6 )
 
-[node name="hand" type="Sprite" parent="." groups=["hand"]]
-position = Vector2( 733, 286 )
-z_index = 2
-texture = ExtResource( 4 )
-centered = false
-offset = Vector2( -80, -80 )
-
-[node name="hand_hbox" type="Area2D" parent="hand"]
-position = Vector2( -733, -286 )
-
-[node name="hand_hbox_poly" type="CollisionPolygon2D" parent="hand/hand_hbox"]
-position = Vector2( 244, 82 )
-scale = Vector2( 0.656249, 0.65625 )
-polygon = PoolVector2Array( 733, 296, 749, 324, 766, 297 )
-
 [node name="scanner" type="Area2D" parent="." groups=["scanner"]]
 
 [node name="scanner_poly" type="CollisionPolygon2D" parent="scanner"]
@@ -134,6 +119,21 @@ position = Vector2( -88, -168 )
 rotation = -1.03847
 z_index = 0
 grocery_type = "cash"
+
+[node name="hand" type="Sprite" parent="." groups=["hand"]]
+position = Vector2( 733, 286 )
+z_index = 2
+texture = ExtResource( 4 )
+centered = false
+offset = Vector2( -80, -80 )
+
+[node name="hand_hbox" type="Area2D" parent="hand"]
+position = Vector2( -733, -286 )
+
+[node name="hand_hbox_poly" type="CollisionPolygon2D" parent="hand/hand_hbox"]
+position = Vector2( 244, 82 )
+scale = Vector2( 0.656249, 0.65625 )
+polygon = PoolVector2Array( 733, 296, 749, 324, 766, 297 )
 
 [node name="conveyor_table2" type="Sprite" parent="."]
 visible = false

@@ -9,6 +9,7 @@ var pickup_grow_factor = 1.05
 var conveyor_speed = 2
 
 var is_in_viewport = true
+var is_within_conveyor_stop = false
 var is_pickupable = false
 var on_entry_conveyor = false
 var on_exit_conveyor = false
@@ -16,21 +17,21 @@ var on_exit_conveyor = false
 var cash_is_droppable = false
 
 signal exited_left(groc_item_type)
-signal cash_picked_up
+signal cash_taken
 signal cash_deposited
 
 func _ready():
 	rng.randomize()
 	connect("exited_left", get_parent(), "groc_item_exited_left")
-	connect("cash_picked_up", get_parent(), "cash_taken")
-	connect("cash_deposited", get_parent(), "cash_deposited_in_cashbox")
+	connect("cash_taken", get_parent().get_parent(), "cash_taken")
+	connect("cash_deposited", get_parent().get_parent(), "cash_deposited_in_cashbox")
 	if(grocery_type):
 		apply_texture(grocery_type)
 
 func _input(event):
 	if Input.is_action_just_pressed("left_mouse") && is_pickupable:
 		# update click_offset and is_dragging state
-		click_offset = position - event.position
+		click_offset = global_position - event.position
 		is_dragging = true
 	elif Input.is_action_just_released("left_mouse"):
 		scale = Vector2(1, 1)
@@ -41,22 +42,27 @@ func _physics_process(delta):
 		scale = Vector2(pickup_grow_factor, pickup_grow_factor)
 		global_position = Global.hand_position + click_offset
 		if(grocery_type == "cash"):
-			emit_signal("cash_picked_up")
+			emit_signal("cash_taken")
 	elif(cash_is_droppable):
-		self.position = Vector2(-88,-168)
 		emit_signal("cash_deposited")
+		self.position = Vector2(-88,-168)
+		self.visible = false
+		print(position)
+		print(global_position)
 	
 	if(on_entry_conveyor && !is_dragging && Global.is_entry_conveyor_active):
 		if(position.x > 1024):
 			self.position.x -= 5 * conveyor_speed
 		elif(position.x > 460):
-			self.position.x -= conveyor_speed
+			self.global_position.x -= conveyor_speed
 	
 	if(on_exit_conveyor && !is_dragging):
 		self.position.x -= conveyor_speed
 	
-	if(position.x < -120):
+	if(global_position.x < -120):
 		emit_signal("exited_left", self.grocery_type)
+		print(self.position)
+		print("out of bounds")
 		self.queue_free()
 
 func _on_groc_item_hbox_area_entered(area):
@@ -77,7 +83,7 @@ func group_collision_update(area, entered):
 	elif(area.is_in_group("conveyor_stop")):
 #		for groc_item in get_tree().get_nodes_in_group("grocery_items"):
 #			groc_item.is_entry_conveyor_active = !entered
-		Global.is_entry_conveyor_active = !entered
+		is_within_conveyor_stop = entered
 	elif(area.is_in_group("exit_conveyor")):
 		on_exit_conveyor = entered
 	elif(area.is_in_group("cashbox") && grocery_type == "cash"):
