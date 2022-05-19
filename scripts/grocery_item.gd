@@ -47,8 +47,6 @@ func _physics_process(delta):
 		emit_signal("cash_deposited")
 		self.position = Vector2(-88,-168)
 		self.visible = false
-		print(position)
-		print(global_position)
 	
 	if(on_entry_conveyor && !is_dragging && Global.is_entry_conveyor_active):
 		if(position.x > 1024):
@@ -61,8 +59,6 @@ func _physics_process(delta):
 	
 	if(global_position.x < -120):
 		emit_signal("exited_left", self.grocery_type)
-		print(self.position)
-		print("out of bounds")
 		self.queue_free()
 
 func _on_groc_item_hbox_area_entered(area):
@@ -95,10 +91,24 @@ func apply_texture(texture_name):
 		self.texture = load("res://assets/" + texture_name + ".png")
 	else:
 		print("texture_name not in Global.grocery_item_types or type 'cash'")
-
-	if(texture_name == "bleach"):
-		self.get_node("groc_item_hbox").scale = Vector2(1.5, 3.0)
-	elif(texture_name == "chips"):
-		self.get_node("groc_item_hbox").scale = Vector2(1.5, 2.0)
-	elif(texture_name == "cash"):
-		self.get_node("groc_item_hbox").position += Vector2(40.0, 40.0)
+	
+	var new_scale = Vector2(1.0, 1.0)
+	var new_position = Vector2(0.0, 0.0)
+	match(texture_name):
+		("apple"):
+			new_scale = Vector2(0.7, 0.7)
+			new_position = Vector2(5.0, 5.0)
+		("bleach"):
+			new_scale = Vector2(1.5, 2.7)
+		("cheese"):
+			new_scale = Vector2(1.0, 0.7)
+			new_position = Vector2(1.0, 12.0)
+		("chips"):
+			new_scale = Vector2(1.5, 2.0)
+		("soda"):
+			new_scale = Vector2(0.7, 1.2)
+		("cash"):
+			new_position = Vector2(40.0, 40.0)
+	
+	self.get_node("groc_item_hbox").scale = new_scale
+	self.get_node("groc_item_hbox").position += new_position

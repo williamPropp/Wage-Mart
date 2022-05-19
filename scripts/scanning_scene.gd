@@ -24,7 +24,6 @@ func _ready():
 	rng.randomize()
 	new_shopper()
 	get_tree().debug_collisions_hint = true
-	print($customer_hand/cash.global_position)
 
 func _input(event):
 	if(event is InputEventMouseMotion):
