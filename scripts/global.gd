@@ -41,3 +41,16 @@ func play_sound(sample_name, bus = "Master"):
 	yield(new_stream_player, "finished")
 	new_stream_player.stop()
 	new_stream_player.queue_free()
+
+func ease_in_ease_out(current_val, min_val, max_val):
+	var slope_and_offset = range_to_min_max(min_val, max_val, 0, 1)
+	var ranged_val = ( current_val * slope_and_offset[0] ) + slope_and_offset[1]
+	var converted_val = -(cos(PI * ranged_val) - 1) / 2
+#	return converted_val
+	return (converted_val - slope_and_offset[1]) / slope_and_offset[0]
+
+func range_to_min_max(min_val : float, max_val : float, new_min_val : float, new_max_val : float):
+	var slope = (new_max_val - new_min_val) / (max_val - min_val)
+	var offset = new_max_val - (slope * max_val)
+	var array = [slope, offset]
+	return array

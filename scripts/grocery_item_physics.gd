@@ -14,12 +14,13 @@ func _input(event):
 	if Input.is_action_just_pressed("left_mouse") && is_pickupable:
 		is_dragging = true
 		self.get_node("grocery_item_sprite").scale = Vector2(pickup_grow_factor, pickup_grow_factor)
-		print("picked up")
+		mode = MODE_STATIC
 	elif Input.is_action_just_released("left_mouse") && is_dragging:
 		self.get_node("grocery_item_sprite").scale = Vector2(1, 1)
 		self.apply_impulse(Vector2(0,0), Vector2(0,1))
 		self.set_sleeping(false)
 		is_dragging = false
+		mode = MODE_RIGID
 
 func _physics_process(delta):
 	if(is_dragging):

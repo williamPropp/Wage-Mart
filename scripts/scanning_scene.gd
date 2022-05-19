@@ -2,14 +2,18 @@ extends Node2D
 
 var rng = RandomNumberGenerator.new()
 
-onready var conveyor = get_node("conveyor_table")
-onready var grocery = get_node("grocery_item")
 onready var hand = get_node("hand")
+onready var shopping_cart = get_node("shopping_cart")
 
 onready var hand_open_sprite = load("res://assets/open_arm.png")
 onready var hand_closed_sprite = load("res://assets/closed_arm.png")
 
-var conveyor_speed = 1
+var shopping_cart_speed = 4
+var shopping_cart_enter = false
+var shopping_cart_exit = false
+
+var num_items
+var shopper_cart_items = []
 
 func _ready():
 	rng.randomize()
@@ -27,23 +31,43 @@ func _input(event):
 	elif Input.is_action_just_released("left_mouse"):
 		hand.texture = hand_open_sprite
 
+func _physics_process(delta):
+	if(shopping_cart_enter || shopping_cart_exit):
+		shopping_cart.position.x -= shopping_cart_speed
+		if(shopping_cart_enter && shopping_cart.position.x < 500):
+			shopping_cart_enter = false
+		elif(shopping_cart_exit && shopping_cart.position.x < -400):
+			shopping_cart_exit = false
+	
+	if(num_items == 0):
+		shopping_cart_exit = true
+		num_items -= 1
+		yield(get_tree().create_timer(4.0), "timeout")
+		new_shopper()
+
 func spawn_rand_grocery_item():
 	var new_grocery_item = load("res://prefabs/grocery_item.tscn").instance()
 	var rand_y = rng.randi_range(180, 400)
 	self.add_child(new_grocery_item)
-	new_grocery_item.position = Vector2(1650, rand_y)
+	new_grocery_item.position = Vector2(2048, rand_y)
 	var rand_grocery_type = Global.grocery_item_types[ rng.randi_range(0, 4) ]
 	new_grocery_item.apply_texture(rand_grocery_type)
 	new_grocery_item.grocery_type = rand_grocery_type
 
 func new_shopper():
-#	var num_items = rng.randi_range(3, 7)
-	var num_items = 7
+	shopping_cart.position.x = 1400
+	shopping_cart_enter = true
+	shopper_cart_items = []
+	
+	num_items = rng.randi_range(3, 7)
 	var time_between_items = rng.randf_range(0.7, 2)
 	for i in range(0,num_items):
 		spawn_rand_grocery_item()
 		yield(get_tree().create_timer(time_between_items), "timeout")
-		
+
+func groc_item_exited_left(groc_type):
+	shopper_cart_items.append(groc_type)
+	num_items -= 1
 
 func edit_saturation(value):
 	var shader = get_node("greyscale_parent/greyscale").material

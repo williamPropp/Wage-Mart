@@ -8,22 +8,18 @@ var is_dragging = false
 var pickup_grow_factor = 1.05
 var conveyor_speed = 2
 
+var is_in_viewport = true
 var is_pickupable = false
 var on_entry_conveyor = false
 var on_exit_conveyor = false
 
+signal exited_left(groc_item_type)
+
 func _ready():
 	rng.randomize()
+	connect("exited_left", get_parent(), "groc_item_exited_left")
 
 func _input(event):
-	# tests whether a click occured within the area of the sprite
-#	if Input.is_action_just_pressed("left_mouse") && get_rect().has_point(to_local(event.position)):
-#		# update click_offset and is_dragging state
-#		click_offset = position - event.position
-#		is_dragging = true
-#	elif Input.is_action_just_released("left_mouse"):
-#		scale = Vector2(1, 1)
-#		is_dragging = false
 	if Input.is_action_just_pressed("left_mouse") && is_pickupable:
 		# update click_offset and is_dragging state
 		click_offset = position - event.position
@@ -32,12 +28,11 @@ func _input(event):
 		scale = Vector2(1, 1)
 		is_dragging = false
 
+func _physics_process(delta):
 	if(is_dragging):
 		scale = Vector2(pickup_grow_factor, pickup_grow_factor)
-#		position = hand_node.position + click_offset
 		position = Global.hand_position + click_offset
-
-func _physics_process(delta):
+	
 	if(on_entry_conveyor && !is_dragging && Global.is_entry_conveyor_active):
 		if(position.x > 1024):
 			self.position.x -= 5 * conveyor_speed
@@ -46,6 +41,10 @@ func _physics_process(delta):
 	
 	if(on_exit_conveyor && !is_dragging):
 		self.position.x -= conveyor_speed
+	
+	if(position.x < -120):
+		emit_signal("exited_left", self.grocery_type)
+		self.queue_free()
 
 func _on_groc_item_hbox_area_entered(area):
 	group_collision_update(area, true)
@@ -57,8 +56,8 @@ func group_collision_update(area, entered):
 	if(area.get_parent().is_in_group("hand")):
 		is_pickupable = entered
 	elif(area.is_in_group("scanner")):
-		var rand = rng.randi_range(0,2)
-		if(rand == 2 && entered):
+		var beep_attempt = rng.randf_range(0,1)
+		if(beep_attempt < 0.8 && entered):
 			Global.play_sound("scanner_beep")
 	elif(area.is_in_group("entry_conveyor")):
 		on_entry_conveyor = entered
@@ -71,6 +70,7 @@ func group_collision_update(area, entered):
 
 func apply_texture(texture_name):
 	if(Global.grocery_item_types.has(texture_name)):
+		grocery_type = texture_name
 		self.texture = load("res://assets/" + texture_name + ".png")
 	else:
 		print("texture_name not in Global.grocery_item_types")
