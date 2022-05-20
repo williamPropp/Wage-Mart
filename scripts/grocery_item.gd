@@ -69,6 +69,8 @@ func _on_groc_item_hbox_area_exited(area):
 
 func group_collision_update(area, entered):
 	if(area.get_parent().is_in_group("hand")):
+		for groc_item in get_tree().get_nodes_in_group("grocery_items"):
+			groc_item.is_pickupable = false
 		is_pickupable = entered
 	elif(area.is_in_group("scanner") && grocery_type != "cash"):
 		var beep_attempt = rng.randf_range(0,1)
