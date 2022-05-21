@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/gui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://materials+shaders/black_n_white.gdshader" type="Shader" id=2]
 [ext_resource path="res://assets/open_arm.png" type="Texture" id=3]
+[ext_resource path="res://assets/bag_transparent.png" type="Texture" id=4]
 [ext_resource path="res://scripts/bagging_scene.gd" type="Script" id=5]
-[ext_resource path="res://icon.png" type="Texture" id=6]
+[ext_resource path="res://assets/bag_opaque.png" type="Texture" id=6]
 [ext_resource path="res://assets/bagging_bg.png" type="Texture" id=7]
 
 [sub_resource type="ShaderMaterial" id=1]
@@ -36,17 +37,27 @@ polygon = PoolVector2Array( 733, 296, 749, 324, 766, 297 )
 [node name="grocery_bag" type="Node2D" parent="."]
 position = Vector2( 831, 406 )
 
-[node name="grocery_bag_sprite" type="Sprite" parent="grocery_bag"]
-position = Vector2( 40, 11 )
-scale = Vector2( 4, 4 )
+[node name="back_opaque_sprite" type="Sprite" parent="grocery_bag"]
+position = Vector2( 40, 0 )
 texture = ExtResource( 6 )
+
+[node name="back_transparent_sprite" type="Sprite" parent="grocery_bag"]
+position = Vector2( 40, 0 )
+z_index = 1
+texture = ExtResource( 4 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="grocery_bag"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="grocery_bag/StaticBody2D"]
-polygon = PoolVector2Array( -93, -129, -66, -127, -57, 118, 141, 123, 143, -119, 177, -119, 176, 148, -93, 146 )
+polygon = PoolVector2Array( -68, -103, -62, -100, -60, 128, 140, 127, 142, -109, 152, -102, 152, 141, -72, 138 )
+
+[node name="bag_area" type="Area2D" parent="grocery_bag" groups=["bag"]]
+
+[node name="bag_area_hbox" type="CollisionPolygon2D" parent="grocery_bag/bag_area"]
+polygon = PoolVector2Array( -68, -103, -57, -111, 142, -109, 152, -102, 152, 141, -72, 138 )
 
 [node name="counter_floor" type="StaticBody2D" parent="."]
+visible = false
 position = Vector2( -3, 6 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="counter_floor"]

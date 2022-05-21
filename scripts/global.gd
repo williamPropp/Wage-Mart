@@ -14,9 +14,7 @@ var hand_position
 
 
 func _ready():
-	get_tree().debug_collisions_hint = true
-	shopper_cart_items = ["apple", "apple", "apple", "apple", "apple", "apple"]
-	scene_switch("bagging_scene")
+	scene_switch("main_menu")
 
 func _physics_process(delta):
 	if(current_scene_name == "scanning_scene" || current_scene_name == "bagging_scene"):

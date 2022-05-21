@@ -3,7 +3,7 @@ extends RigidBody2D
 var click_offset
 var is_pickupable = false
 var is_dragging = false
-var within_bag
+var is_within_bag = false
 
 var pickup_grow_factor = 1.05
 
@@ -64,8 +64,10 @@ func apply_texture(texture_name):
 	self.get_node("groc_item_rigib_body_poly").position += new_position
 	
 func _on_groc_item_hbox_area_entered(area):
-	if(area.get_parent().is_in_group("hand")): is_pickupable = true
-
+	if(area.is_in_group("bag")): is_within_bag = true
+	if(area.get_parent().is_in_group("hand") && !is_within_bag): is_pickupable = true
+	
 
 func _on_groc_item_hbox_area_exited(area):
+	if(area.is_in_group("bag")): is_within_bag = false
 	if(area.get_parent().is_in_group("hand")): is_pickupable = false
