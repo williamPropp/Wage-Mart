@@ -3,6 +3,7 @@ extends RigidBody2D
 var click_offset
 var is_pickupable = false
 var is_dragging = false
+var within_bag
 
 var pickup_grow_factor = 1.05
 

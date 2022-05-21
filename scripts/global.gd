@@ -15,7 +15,7 @@ var hand_position
 
 func _ready():
 	get_tree().debug_collisions_hint = true
-	shopper_cart_items = ["cheese", "bleach", "soda", "apple"]
+	shopper_cart_items = ["apple", "apple", "apple", "apple", "apple", "apple"]
 	scene_switch("bagging_scene")
 
 func _physics_process(delta):

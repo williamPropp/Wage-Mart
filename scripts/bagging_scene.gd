@@ -8,7 +8,7 @@ onready var hand_open_sprite = load("res://assets/open_arm.png")
 onready var hand_closed_sprite = load("res://assets/closed_arm.png")
 
 var held_grocery_item
-var item_distance = 100
+var item_spacing = 10
 
 func _ready():
 	rng.randomize()
@@ -28,12 +28,17 @@ func _input(event):
 	
 func spawn_customers_items():
 	var index = 0
+	var x_pos = 730
 	for groc_item in Global.shopper_cart_items:
 		var loaded_groc_item = load("res://prefabs/grocery_item_physics.tscn").instance()
 		self.add_child(loaded_groc_item)
-		loaded_groc_item.position = Vector2(300 + (item_distance * index), 500)
 		loaded_groc_item.apply_texture(groc_item)
-		index += 1
+		var item_width = loaded_groc_item.get_node("grocery_item_sprite").texture.get_width()
+		print(item_width)
+		x_pos -= (item_width/2) + item_spacing
+		loaded_groc_item.position = Vector2(x_pos, 500)
+		x_pos -= (item_width/2)
+		index += 1	
 
 func edit_saturation(value):
 	var shader = get_node("greyscale_parent/greyscale").material
