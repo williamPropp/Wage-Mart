@@ -91,6 +91,8 @@ func spawn_rand_grocery_item():
 	new_grocery_item.grocery_type = rand_grocery_type
 
 func new_shopper():
+	Global.play_sound("cart_enter")
+	
 	shopping_cart.position.x = 1400
 	shopping_cart_enter = true
 	Global.shopper_cart_items = []
@@ -115,9 +117,11 @@ func cash_taken():
 	$customer_hand.texture = hand_open_sprite
 
 func cash_deposited_in_cashbox():
+	Global.play_sound("cha-ching")
 	closing_cash_box = true
 	yield(get_tree().create_timer(1.5), "timeout")
 	shopping_cart_exit = true
+	Global.play_sound("cart_exit")
 	yield(get_tree().create_timer(4.0), "timeout")
 	Global.scene_switch("bagging_scene")
 #	new_shopper()

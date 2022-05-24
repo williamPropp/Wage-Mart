@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/cart_exit.mp3-bbbfd9d49d5299f06b8cfe77c58b3b51.mp3str"
+
+[deps]
+
+source_file="res://sounds/cart_exit.mp3"
+dest_files=[ "res://.import/cart_exit.mp3-bbbfd9d49d5299f06b8cfe77c58b3b51.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

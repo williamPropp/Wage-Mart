@@ -1,7 +1,5 @@
 extends Node
 
-#enum Scene_State {main_menu_scene_state, scanning_scene_state, bagging_scene_state, finance_scene_state}
-#var current_scene_state = Scene_State.main_menu_scene_state
 var current_scene_name
 var current_scene
 
@@ -12,6 +10,7 @@ var is_entry_conveyor_active = true
 var hand
 var hand_position
 
+var eye_transition
 
 func _ready():
 	scene_switch("main_menu")
@@ -27,11 +26,11 @@ func scene_switch(scene_name):
 		current_scene.queue_free()
 	current_scene = next_scene
 	current_scene_name = scene_name
-	
 	match(scene_name):
 		("main_menu"):
 			pass
 		("scanning_scene"):
+			play_sound("ambient_grocery", "Master", -20.0)
 			hand = get_node(scene_name + "/hand")
 			Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 		("bagging_scene"):
@@ -40,11 +39,8 @@ func scene_switch(scene_name):
 		("week_breakdown"):
 			pass
 	
-func play_sound(sample_name, bus = "Master"):
-	var sample_path
-	match(sample_name):
-		"scanner_beep":
-			sample_path = "res://sounds/scanner_beep.mp3"
+func play_sound(sample_name, bus = "Master", new_volume = 0.0):
+	var sample_path = "res://sounds/" + sample_name + ".mp3"
 	
 	var new_stream_player = AudioStreamPlayer.new()
 	add_child(new_stream_player)
@@ -55,6 +51,7 @@ func play_sound(sample_name, bus = "Master"):
 	# create new stream player instance to host the sound, then play the sound
 	new_stream_player.stream = sound_to_play
 	new_stream_player.bus = bus
+	new_stream_player.volume_db = new_volume
 	new_stream_player.play(0.0)
 	
 	# delete node once the sample finishes playing
